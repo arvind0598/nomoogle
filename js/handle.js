@@ -19,7 +19,7 @@ function openLink(url) {
 
 function renderData(data) {
 
-    var template = $('#handlebars-alternative').html();
+    var template = document.getElementById('handlebars-alternative').innerHTML;
 
     var context = {
         data: data
@@ -29,12 +29,12 @@ function renderData(data) {
 
     var html = templateScript(context);
 
-    $(".alternatives").append(html);
+    document.getElementsByClassName("alternatives")[0].innerHTML += html;
 }
 
 function renderTitle(data) {
 
-    var template = $('#handlebars-title').html();
+    var template = document.getElementById('handlebars-title').innerHTML;
 
     var context = {
         title: data
@@ -44,5 +44,5 @@ function renderTitle(data) {
 
     var html = templateScript(context);
 
-    $(".message").html(html);
+    document.getElementsByClassName("message")[0].innerHTML = html;
 }
