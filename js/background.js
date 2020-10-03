@@ -1,5 +1,6 @@
-$.getJSON("../data/data.json").then(function (data) {
-
+fetch("../data/data.json")
+    .then(response => response.json())
+    .then(data => {
     chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
         let currentSite = request.title;
         let regxAllDomains = /(https?:\/\/(.+?\.)?google(\/[A-Za-z0-9\-\._~:\/\?#\[\]@!$&'\(\)\*\+,;\=]*)?)/;
