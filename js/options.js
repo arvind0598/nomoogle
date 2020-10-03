@@ -1,25 +1,29 @@
-document.getElementById('enableRedirects').onclick = (e) => { 
-  document.getElementById('enableStrictMode').checked = false;
-    chrome.storage.sync.set({
-        redirectEnabled: e.currentTarget.checked,
-        strictModeEnabled: false
-      });    
-}
+const enableRedirectsElement = document.getElementById('enableRedirects');
+const enableStrictModeElement = document.getElementById('enableStrictMode');
 
-document.getElementById('enableStrictMode').onclick = (e) => {   
-  document.getElementById('enableRedirects').checked =false;     
-    chrome.storage.sync.set({
-        redirectEnabled: false,
-        strictModeEnabled: e.currentTarget.checked
-      });    
-}
+const getStorageData = (redirectEnabled, strictModeEnabled) => ({
+  redirectEnabled,
+  strictModeEnabled,
+});
 
-document.addEventListener('DOMContentLoaded',()=>{
-    chrome.storage.sync.get({
-        redirectEnabled: false,
-        strictModeEnabled: false
-      }, function(items) {          
-        document.getElementById('enableRedirects').checked = items.redirectEnabled;
-        document.getElementById('enableStrictMode').checked = items.strictModeEnabled;
-      });
+enableRedirectsElement.onclick = (e) => {
+  enableStrictModeElement.checked = false;
+  const data = getStorageData(e.currentTarget.checked, false);
+  chrome.storage.sync.set(data);
+};
+
+enableStrictModeElement.onclick = (e) => {
+  enableRedirectsElement.checked = false;
+  const data = getStorageData(false, e.currentTarget.checked);
+  chrome.storage.sync.set(data);
+};
+
+const setCheckedFromItems = (items) => {
+  enableRedirectsElement.checked = items.redirectEnabled;
+  enableStrictModeElement.checked = items.strictModeEnabled;
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  const defaultStorageData = getStorageData(false, false);
+  chrome.storage.sync.get(defaultStorageData, setCheckedFromItems);
 });
