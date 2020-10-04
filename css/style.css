@@ -7,11 +7,12 @@ body{
     display: grid;
     grid-template-columns: 1fr 2fr;
 }
-.message{
+
+#message{
     text-align: center;
 }
 
-.message h1{
+#message h1{
     font-weight: 100;
 }
 
@@ -27,7 +28,7 @@ body{
     font-weight: 100;
 }
 
-.alternatives{
+#alternatives{
     margin-top: 20px;
 }
 
