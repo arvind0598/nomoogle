@@ -65,7 +65,7 @@ Please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c6
 
 * **Arvind S** - *Started Project Rewrite for v2* - [arvind0598](https://github.com/arvind0598)
 
-See also the list of [contributors](https://github.com/your/project/contributors) who participated in this project.
+See also the list of [contributors](https://github.com/arvind0598/nomoogle-v2/graphs/contributors) who participated in this project.
 
 ## License
 
