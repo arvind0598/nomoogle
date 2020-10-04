@@ -5,31 +5,56 @@ chrome.tabs.query({
   chrome.runtime.sendMessage(tabs[0], function (response) {
     if (response) {
       renderTitle(response.title);
-      renderData(response.data);
+      renderAlternatives(response.data);
     }
   });
 });
 
-function openLink(url) {
-  chrome.tabs.create({
-    url: url
-  });
+const ALTERNATIVES_DIV = document.getElementById('alternatives');
+const MESSAGE_DIV = document.getElementById('message');
+
+const openLink = (url) => chrome.tabs.create({ url });
+
+const createAlternativeElement = (alternative) => {
+  const logoElement = document.createElement('img');
+  logoElement.src = alternative.logoUrl;
+  logoElement.alt = '';
+  const logoWrapperElement = document.createElement('div');
+  logoWrapperElement.classList.add('alt-logo');
+  logoWrapperElement.appendChild(logoElement);
+  
+  const nameElement = document.createElement('p');
+  nameElement.textContent = alternative.name;
+  const nameWrapperElement = document.createElement('div');
+  nameWrapperElement.classList.add('alt-title');
+  nameWrapperElement.appendChild(nameElement);
+
+  const wrapperElement = document.createElement('div');
+  wrapperElement.classList.add('alternative');
+  wrapperElement.onclick = () => openLink(alternative.url);
+  wrapperElement.appendChild(logoWrapperElement);
+  wrapperElement.appendChild(nameWrapperElement);
+
+  return wrapperElement;
 }
 
-function renderData(data) {
-  var template = document.getElementById('handlebars-alternative').innerHTML;
-  var context = { data };
+const renderAlternatives = (alternatives) => alternatives
+  .map(createAlternativeElement)
+  .map((alternativeElement) => ALTERNATIVES_DIV.appendChild(alternativeElement));
+ 
+const renderTitle = (title) => {
+  const currentTextElement = document.createElement('div');
+  currentTextElement.classList.add('current-text');
+  currentTextElement.textContent = 'Current Site:';
 
-  var templateScript = Handlebars.compile(template);
-  var html = templateScript(context);
-  document.getElementsByClassName("alternatives")[0].innerHTML += html;
-}
+  const siteNameElement = document.createElement('div');
+  siteNameElement.classList.add('site-name');
+  siteNameElement.textContent = title;
 
-function renderTitle(title) {
-  var template = document.getElementById('handlebars-title').innerHTML;
-  var context = { title };
+  const wrapperElement = document.createElement('div');
+  wrapperElement.classList.add('current-site');
+  wrapperElement.appendChild(currentTextElement);
+  wrapperElement.appendChild(siteNameElement);
 
-  var templateScript = Handlebars.compile(template);
-  var html = templateScript(context);
-  document.getElementsByClassName("message")[0].innerHTML = html;
-}
+  MESSAGE_DIV.innerHTML = wrapperElement.outerHTML;
+};
